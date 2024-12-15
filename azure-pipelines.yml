@@ -7,15 +7,21 @@ trigger:
 - master
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
 
 steps:
 - task: NodeTool@0
   inputs:
-    versionSpec: '20.x'
+    versionSpec: '20.x' # or the Node.js version your project requires
   displayName: 'Install Node.js'
 
 - script: |
     npm install
     npm run build
-  displayName: 'npm install and build'
+  displayName: 'Build Vue.js Project'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(System.DefaultWorkingDirectory)/dist'
+    artifact: 'vue-dist'
+  displayName: 'Publish Build Artifacts'
