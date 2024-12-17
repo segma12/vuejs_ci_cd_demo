@@ -10,7 +10,7 @@ variables:
   variables:
   dockerRegistryServiceConnection: 'VuejsContainer'
   imageRepository: 'vuejs-app'
-  containerRegistry: 'vuejscontainer'
+  containerRegistry: 'VuejsContainer'
   tag: '$(Build.BuildId)'
   azureServiceConnection: 'VuejsDemoDocker'
   appServiceName: 'VuejsDemoDocker'
@@ -31,4 +31,4 @@ steps:
     azureSubscription: '$(azureServiceConnection)'
     appName: '$(appServiceName)'
     containers: |
-      $(containerRegistry)/$(imageName):$(tag)
+      vuejscontainer/$(imageName):$(tag)
