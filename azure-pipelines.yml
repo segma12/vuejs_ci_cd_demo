@@ -24,10 +24,10 @@ jobs:
       - task: Docker@2
         displayName: 'Build and Push Docker Image'
         inputs:
-          containerRegistry: $(azureContainerRegistry)
-          repository: $(imageName)
+          containerRegistry: '$(azureContainerRegistry)'
+          repository: '$(imageName)'
           command: 'buildAndPush'
-          Dockerfile: $(Build.SourcesDirectory)/Dockerfile
+          Dockerfile: '**/Dockerfile'
           tags: latest  # Use Build ID as the tag
 
   - job: DeployToAzure
@@ -37,11 +37,11 @@ jobs:
       - task: AzureCLI@2
         displayName: 'Azure CLI - Deploy Docker Image'
         inputs:
-          azureSubscription: $(azureSubscription)
+          azureSubscription: '$(azureSubscription)'
           scriptType: bash
           scriptLocation: inlineScript
           inlineScript: |
             az webapp config container set \
-              --name $(appName) \
-              --resource-group $(azureResourceGroup) \
-              --docker-custom-image-name $(azureContainerRegistry)/$(imageName):latest
+              --name '$(appName)' \
+              --resource-group '$(azureResourceGroup)' \
+              --docker-custom-image-name '$(azureContainerRegistry)/'$(imageName)':latest
