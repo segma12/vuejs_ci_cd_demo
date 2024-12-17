@@ -7,6 +7,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
+  system.debug: true
   imageName: 'vue-app'
   azureContainerRegistry: 'VuejsContainer'
   azureSubscription: 'VuejsDemoDocker'
