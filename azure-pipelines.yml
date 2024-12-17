@@ -7,7 +7,7 @@ variables:
   azureContainerRegistry: 'VuejsContainerServiceConnection'  # Replace with the actual service connection name
   azureSubscription: 'VuejsDemoDockerServiceConnection'       # Replace with the actual Azure service connection name
   azureResourceGroup: 'VuejsDemoDocker_group'
-  appName: 'VuejsDemoDocker'
+  appServiceName: 'VuejsDemoDocker'
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -36,6 +36,6 @@ steps:
   - task: AzureWebAppContainer@1
     inputs:
       azureSubscription: '$(azureSubscription)'
-      appName: '$(appName)'
+      appName: '$(appServiceName)'
       imageName: '$(imageName):$(Build.BuildId)'
     displayName: 'Deploy to Azure Web App'
