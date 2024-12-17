@@ -9,8 +9,13 @@ pool:
 variables:
   azureContainerRegistry: 'VuejsContainer'  # Azure Container Registry name
   imageName: 'vuejs-app'  # Name of your Docker image
+  buildConfiguration: 'Release'
+  dockerRegistryServiceConnection: 'VuejsContainer'
+  imageRepository: 'vue-app'
+  containerRegistry: 'VuejsContainer'
+  tag: '$(Build.BuildId)'
+  azureServiceConnection: 'VuejsDemoDocker'
   appServiceName: 'VuejsDemoDocker'
-  azureSubscription: 'VuejsDemoDocker'
 
 steps:
 # 1. Checkout the code
@@ -31,7 +36,7 @@ steps:
 # 3. Deploy to Azure App Service using Docker container
 - task: AzureWebAppContainer@1
   inputs:
-    azureSubscription: '$(azureSubscription)'
+    azureSubscription: '$(azureServiceConnection)'
     appName: '$(appServiceName)'  # Name of the App Service
     containerRegistry: '$(azureContainerRegistry)'
     imageName: '$(azureContainerRegistry)/$(imageName):latest'
