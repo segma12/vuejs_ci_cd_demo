@@ -20,8 +20,8 @@ stages:
   - job: Build
     displayName: Build
     steps:
-    - task: Checkout@1
-      displayName: 'Checkout code'
+    # - task: Checkout@1
+    #   displayName: 'Checkout code'
 
     - task: Docker@2
       displayName: Build and Push Docker Image
@@ -47,7 +47,7 @@ stages:
           - task: AzureWebAppContainer@1
             inputs:
               azureSubscription: '$(azureServiceConnection)'
-              appName: 'VuejsDemo'
+              appName: 'VuejsDemoDocker'
               containerRegistry: $(containerRegistry)
               imageName: $(imageRepository)
               tag: $(tag)
