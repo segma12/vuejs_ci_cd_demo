@@ -15,6 +15,7 @@ variables:
   azureServiceConnection: 'VuejsDemoDocker'
   appServiceName: 'VuejsDemoDocker'
 steps:
+
 # Step 1: Build Docker Image
 - task: Docker@2
   displayName: 'Build Docker Image'
@@ -24,11 +25,12 @@ steps:
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
     tags: $(tag)
-# Step 2: Deploy Docker Image to Azure App Service
-- task: AzureWebAppContainer@1
-  displayName: 'Deploy to Azure App Service'
-  inputs:
-    azureSubscription: '$(azureServiceConnection)'
-    appName: '$(appServiceName)'
-    containers: |
-      vuejscontainer/$(imageName):$(tag)
+
+# # Step 2: Deploy Docker Image to Azure App Service
+# - task: AzureWebAppContainer@1
+#   displayName: 'Deploy to Azure App Service'
+#   inputs:
+#     azureSubscription: '$(azureServiceConnection)'
+#     appName: '$(appServiceName)'
+#     containers: |
+#       vuejscontainer/$(imageName):$(tag)
