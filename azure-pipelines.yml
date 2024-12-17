@@ -8,11 +8,11 @@ variables:
   buildConfiguration: 'Release'
   imageName: 'vuejs-app'
   variables:
-  dockerRegistryServiceConnection: 'VuejsContainerServiceConnection'
+  dockerRegistryServiceConnection: 'VuejsContainer'
   imageRepository: 'vue-app'
-  containerRegistry: 'VuejsContainerServiceConnection'
+  containerRegistry: 'VuejsContainer'
   tag: '$(Build.BuildId)'
-  azureServiceConnection: 'VuejsDemoDockerServiceConnection'
+  azureServiceConnection: 'VuejsDemoDocker'
   appServiceName: 'VuejsDemoDocker'
 steps:
 # Step 1: Build Docker Image
