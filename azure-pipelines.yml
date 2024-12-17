@@ -8,9 +8,9 @@ pool:
 
 variables:
   system.debug: true
-  imageName: 'vue-app'
+  imageName: 'vuejs-app'
   azureContainerRegistry: 'VuejsContainer'  # Replace with the actual service connection name
-  azureSubscription: 'VuejsDemoDocker'       # Replace with the actual Azure service connection name
+  azureSubscription: 'c057640d-737a-49c1-91b1-f4a4ac5f8ab6'       # Replace with the actual Azure service connection name
   azureResourceGroup: 'VuejsDemoDocker_group'
   appName: 'VuejsDemoDocker'
 
@@ -25,7 +25,7 @@ jobs:
         displayName: 'Build and Push Docker Image'
         inputs:
           containerRegistry: $(azureContainerRegistry)
-          repository: $(imageName)
+          repository: '$(imageName)'
           command: 'buildAndPush'
           Dockerfile: $(Build.SourcesDirectory)/Dockerfile
           tags: $(Build.BuildId)  # Use Build ID as the tag
