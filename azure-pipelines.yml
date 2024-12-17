@@ -28,7 +28,7 @@ jobs:
           repository: $(imageName)
           command: 'buildAndPush'
           Dockerfile: '**/Dockerfile'
-          tags: $(tag)
+          tags: $(Build.BuildId)
 
   - job: DeployToAzure
     displayName: 'Deploy Docker Image to Azure App Service'
