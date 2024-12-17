@@ -1,36 +1,38 @@
 trigger:
-- master
+  branches:
+    include:
+      - master  # Trigger pipeline on commits to the main branch
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'ubuntu-latest'  # Use the latest Ubuntu image for the build
 
 variables:
-  buildConfiguration: 'Release'
-  imageName: 'vuejs-app'
-  variables:
-  dockerRegistryServiceConnection: 'VuejsContainer'
-  imageRepository: 'vue-app'
-  containerRegistry: 'VuejsContainer'
-  tag: '$(Build.BuildId)'
-  azureServiceConnection: 'VuejsDemoDocker'
+  azureContainerRegistry: 'VuejsContainer'  # Azure Container Registry name
+  imageName: 'vuejs-app'  # Name of your Docker image
   appServiceName: 'VuejsDemoDocker'
+  azureSubscription: 'VuejsDemoDocker'
 
 steps:
-# Step 1: Build Docker Image
-- task: Docker@2
-  displayName: 'Build Docker Image'
-  inputs:
-    containerRegistry: '$(containerRegistry)'
-    repository: $(imageName)
-    command: 'buildAndPush'
-    Dockerfile: '**/Dockerfile'
-    tags: $(tag)
+# 1. Checkout the code
+- task: Checkout@1
+  displayName: 'Checkout Code'
 
-# Step 2: Deploy Docker Image to Azure App Service
-- task: AzureWebAppContainer@1
-  displayName: 'Deploy to Azure App Service'
+# 2. Set up Docker
+- task: Docker@2
   inputs:
-    azureSubscription: '$(azureServiceConnection)'
-    appName: '$(appServiceName)'
-    containers: |
-      $(containerRegistry)/$(imageName):$(tag)
+    command: 'buildAndPush'
+    containerRegistry: '$(azureContainerRegistry)'  # Use your ACR
+    repository: '$(azureContainerRegistry)/$(imageName)'
+    dockerfile: '**/Dockerfile'  # Path to the Dockerfile
+    buildContext: '.'
+    tags: |
+      latest
+
+# 3. Deploy to Azure App Service using Docker container
+- task: AzureWebAppContainer@1
+  inputs:
+    azureSubscription: '$(azureSubscription)'
+    appName: '$(appServiceName)'  # Name of the App Service
+    containerRegistry: '$(azureContainerRegistry)'
+    imageName: '$(azureContainerRegistry)/$(imageName):latest'
+    isPushEnabled: true
