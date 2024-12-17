@@ -9,7 +9,7 @@ pool:
 variables:
   system.debug: true
   imageName: 'vuejs-app'
-  azureContainerRegistry: 'VuejsContainer'  # Replace with the actual service connection name
+  azureContainerRegistry: '73f1a52b-6568-4826-8fd3-62b9979d184f'  # Replace with the actual service connection name
   azureSubscription: 'c057640d-737a-49c1-91b1-f4a4ac5f8ab6'       # Replace with the actual Azure service connection name
   azureResourceGroup: 'VuejsDemoDocker_group'
   appName: 'VuejsDemoDocker'
@@ -25,10 +25,10 @@ jobs:
         displayName: 'Build and Push Docker Image'
         inputs:
           containerRegistry: $(azureContainerRegistry)
-          repository: '$(imageName)'
+          repository: $(imageName)
           command: 'buildAndPush'
           Dockerfile: $(Build.SourcesDirectory)/Dockerfile
-          tags: $(Build.BuildId)  # Use Build ID as the tag
+          tags: latest  # Use Build ID as the tag
 
   - job: DeployToAzure
     displayName: 'Deploy Docker Image to Azure App Service'
@@ -44,4 +44,4 @@ jobs:
             az webapp config container set \
               --name $(appName) \
               --resource-group $(azureResourceGroup) \
-              --docker-custom-image-name $(azureContainerRegistry)/$(imageName):$(Build.BuildId)
+              --docker-custom-image-name $(azureContainerRegistry)/$(imageName):latest
