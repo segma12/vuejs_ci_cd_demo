@@ -10,7 +10,6 @@ variables:
   azureContainerRegistry: 'VuejsContainer'  # Azure Container Registry name
   imageName: 'vuejs-app'  # Name of your Docker image
   buildConfiguration: 'Release'
-  dockerRegistryServiceConnection: 'VuejsContainer'
   imageRepository: 'vue-app'
   containerRegistry: 'VuejsContainer'
   tag: '$(Build.BuildId)'
@@ -40,4 +39,4 @@ steps:
     appName: '$(appServiceName)'  # Name of the App Service
     containerRegistry: '$(azureContainerRegistry)'
     imageName: '$(azureContainerRegistry)/$(imageName):latest'
-    isPushEnabled: true
+    # isPushEnabled: true
