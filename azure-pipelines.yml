@@ -60,9 +60,29 @@ steps:
       #   --ports 80 \
       #   --restart-policy Always
 
+      # # Check if the container group exists
+      # if az container show --name $(containerGroup) --resource-group $(resourceGroup) &> /dev/null; then
+      #   echo "Container group exists. Updating the image..."
+      #   az container update \
+      #     --name $(containerGroup) \
+      #     --resource-group $(resourceGroup) \
+      #     --image $(acrName).azurecr.io/$(imageName):$(tag)
+      # else
+      #   echo "Container group does not exist. Creating a new one..."
+      #   az container create \
+      #     --resource-group $(resourceGroup) \
+      #     --name $(containerGroup) \
+      #     --image $(acrName).azurecr.io/$(imageName):$(tag) \
+      #     --registry-login-server $(acrName).azurecr.io \
+      #     --registry-username $ACR_USERNAME \
+      #     --registry-password $ACR_PASSWORD \
+      #     --dns-name-label $(dnsName) \
+      #     --ports 80 \
+      #     --location $(region) \
+      #     --restart-policy Always
+      # fi
 
       az container update \
       --name $(containerGroup) \
       --resource-group $(resourceGroup) \
       --image $(acrName).azurecr.io/$(imageName):$(tag)
-      --restart-policy Always
