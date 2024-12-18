@@ -42,6 +42,12 @@ steps:
       ACR_USERNAME=$(az acr credential show --name $(acrName) --query "username" --output tsv)
       ACR_PASSWORD=$(az acr credential show --name $(acrName) --query "passwords[0].value" --output tsv)
 
+      # Delete the existing container group if it exists
+      az container delete \
+      --name $(containerGroup) \
+      --resource-group $(resourceGroup) \
+      --yes || echo "No existing container group to delete."
+
       # Deploy the container
       az container create \
         --resource-group $(resourceGroup) \
