@@ -42,23 +42,23 @@ steps:
       ACR_USERNAME=$(az acr credential show --name $(acrName) --query "username" --output tsv)
       ACR_PASSWORD=$(az acr credential show --name $(acrName) --query "passwords[0].value" --output tsv)
 
-      # # Delete the existing container group if it exists
-      # az container delete \
-      # --name $(containerGroup) \
-      # --resource-group $(resourceGroup) \
-      # --yes || echo "No existing container group to delete."
+      # Delete the existing container group if it exists
+      az container delete \
+      --name $(containerGroup) \
+      --resource-group $(resourceGroup) \
+      --yes || echo "No existing container group to delete."
 
-      # # Deploy the container
-      # az container create \
-      #   --resource-group $(resourceGroup) \
-      #   --name $(containerGroup) \
-      #   --image $(acrName).azurecr.io/$(imageName):$(tag) \
-      #   --registry-login-server $(acrName).azurecr.io \
-      #   --registry-username $ACR_USERNAME \
-      #   --registry-password $ACR_PASSWORD \
-      #   --dns-name-label $(containerGroup) \
-      #   --ports 80 \
-      #   --restart-policy Always
+      # Deploy the container
+      az container create \
+        --resource-group $(resourceGroup) \
+        --name $(containerGroup) \
+        --image $(acrName).azurecr.io/$(imageName):$(tag) \
+        --registry-login-server $(acrName).azurecr.io \
+        --registry-username $ACR_USERNAME \
+        --registry-password $ACR_PASSWORD \
+        --dns-name-label $(containerGroup) \
+        --ports 80 \
+        --restart-policy Always
 
       # # Check if the container group exists
       # if az container show --name $(containerGroup) --resource-group $(resourceGroup) &> /dev/null; then
@@ -82,7 +82,7 @@ steps:
       #     --restart-policy Always
       # fi
 
-      az container update \
-      --name $(containerGroup) \
-      --resource-group $(resourceGroup) \
-      --image $(acrName).azurecr.io/$(imageName):$(tag)
+      # az container update \
+      # --name $(containerGroup) \
+      # --resource-group $(resourceGroup) \
+      # --image $(acrName).azurecr.io/$(imageName):$(tag)
