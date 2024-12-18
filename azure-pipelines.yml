@@ -19,8 +19,8 @@ variables:
 
 steps:
 
-# Step 1: Checkout the code
-- task: Checkout@1
+# # Step 1: Checkout the code
+# - task: Checkout@1
 
 # Step 2: Build Docker Image
 - task: Docker@2
