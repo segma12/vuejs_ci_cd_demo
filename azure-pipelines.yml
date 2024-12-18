@@ -10,7 +10,7 @@ variables:
   containerRegistry: 'VuejsDockerContainerV2'
   tag: '$(Build.BuildId)'
 
-  acrName: 'VuejsDemoDockerV2'                                      # Azure Container Registry name
+  acrName: 'VuejsDockerContainerV2'                                 # Azure Container Registry name
   resourceGroup: 'VuejsDockerDemoV2'                                # Azure Resource Group
   containerGroup: 'vuejs-docker-demo-container-instance'            # ACI Container Group name
   region: 'Canada Central'                                          # Azure region (e.g., eastus)
