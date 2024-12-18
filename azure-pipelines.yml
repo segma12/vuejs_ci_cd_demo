@@ -42,20 +42,27 @@ steps:
       ACR_USERNAME=$(az acr credential show --name $(acrName) --query "username" --output tsv)
       ACR_PASSWORD=$(az acr credential show --name $(acrName) --query "passwords[0].value" --output tsv)
 
-      # Delete the existing container group if it exists
-      az container delete \
+      # # Delete the existing container group if it exists
+      # az container delete \
+      # --name $(containerGroup) \
+      # --resource-group $(resourceGroup) \
+      # --yes || echo "No existing container group to delete."
+
+      # # Deploy the container
+      # az container create \
+      #   --resource-group $(resourceGroup) \
+      #   --name $(containerGroup) \
+      #   --image $(acrName).azurecr.io/$(imageName):$(tag) \
+      #   --registry-login-server $(acrName).azurecr.io \
+      #   --registry-username $ACR_USERNAME \
+      #   --registry-password $ACR_PASSWORD \
+      #   --dns-name-label $(containerGroup) \
+      #   --ports 80 \
+      #   --restart-policy Always
+
+
+      az container update \
       --name $(containerGroup) \
       --resource-group $(resourceGroup) \
-      --yes || echo "No existing container group to delete."
-
-      # Deploy the container
-      az container create \
-        --resource-group $(resourceGroup) \
-        --name $(containerGroup) \
-        --image $(acrName).azurecr.io/$(imageName):$(tag) \
-        --registry-login-server $(acrName).azurecr.io \
-        --registry-username $ACR_USERNAME \
-        --registry-password $ACR_PASSWORD \
-        --dns-name-label $(containerGroup) \
-        --ports 80 \
-        --restart-policy Always
+      --image $(acrName).azurecr.io/$(imageName):$(tag)
+      --restart-policy Always
