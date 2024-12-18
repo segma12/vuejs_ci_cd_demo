@@ -56,6 +56,6 @@ steps:
         --registry-login-server $(acrName).azurecr.io \
         --registry-username $ACR_USERNAME \
         --registry-password $ACR_PASSWORD \
-        --dns-name-label $(containerGroup)-$(Build.BuildId) \
+        --dns-name-label $(containerGroup) \
         --ports 80 \
         --restart-policy Always
