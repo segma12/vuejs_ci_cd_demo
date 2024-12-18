@@ -19,10 +19,7 @@ variables:
 
 steps:
 
-# # Step 1: Checkout the code
-# - task: Checkout@1
-
-# Step 2: Build Docker Image
+# Step 1: Build Docker Image
 - task: Docker@2
   displayName: 'Build Docker Image'
   inputs:
@@ -32,7 +29,7 @@ steps:
     Dockerfile: '**/Dockerfile'
     tags: $(tag)
 
-# Step 3: Deploy to Azure Container Instances
+# Step 2: Deploy to Azure Container Instances
 - task: AzureCLI@2
   displayName: 'Deploy to Azure Container Instances'
   inputs:
@@ -40,6 +37,12 @@ steps:
     scriptType: bash
     scriptLocation: inlineScript
     inlineScript: |
+
+      # Get ACR credentials
+      ACR_USERNAME=$(az acr credential show --name $(acrName) --query "username" --output tsv)
+      ACR_PASSWORD=$(az acr credential show --name $(acrName) --query "passwords[0].value" --output tsv)
+
+      # Deploy the container
       az container create \
         --resource-group $(resourceGroup) \
         --name $(containerGroup) \
