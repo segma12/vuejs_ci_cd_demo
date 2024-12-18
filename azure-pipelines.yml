@@ -9,11 +9,20 @@ variables:
   dockerRegistryServiceConnection: 'VuejsDockerContainerV2'
   containerRegistry: 'VuejsDockerContainerV2'
   tag: '$(Build.BuildId)'
-  # azureServiceConnection: 'VuejsDemoDocker'
-  # appServiceName: 'VuejsDemoDocker'
+
+  acrName: 'VuejsDemoDockerV2'                                      # Azure Container Registry name
+  resourceGroup: 'VuejsDockerDemoV2'                                # Azure Resource Group
+  containerGroup: 'vuejs-docker-demo-container-instance'            # ACI Container Group name
+  region: 'Canada Central'                                          # Azure region (e.g., eastus)
+  azureSubscription: 'VuejsDockerDemoResourcesServiceConnection'    # Azure resources group service connection
+
+
 steps:
 
-# Step 1: Build Docker Image
+# Step 1: Checkout the code
+- task: Checkout@1
+
+# Step 2: Build Docker Image
 - task: Docker@2
   displayName: 'Build Docker Image'
   inputs:
@@ -23,11 +32,19 @@ steps:
     Dockerfile: '**/Dockerfile'
     tags: $(tag)
 
-# # Step 2: Deploy Docker Image to Azure App Service
-# - task: AzureWebAppContainer@1
-#   displayName: 'Deploy to Azure App Service'
-#   inputs:
-#     azureSubscription: '$(azureServiceConnection)'
-#     appName: '$(appServiceName)'
-#     containers: |
-#       vuejscontainer/$(imageName):$(tag)
+# Step 3: Deploy to Azure Container Instances
+- task: AzureCLI@2
+  displayName: 'Deploy to Azure Container Instances'
+  inputs:
+    azureSubscription: '$(azureSubscription)'  # Azure RM connection
+    scriptType: bash
+    scriptLocation: inlineScript
+    inlineScript: |
+      az container create \
+        --resource-group $(resourceGroup) \
+        --name $(containerGroup) \
+        --image $(acrName).azurecr.io/$(imageName):$(tag) \
+        --registry-login-server $(acrName).azurecr.io \
+        --dns-name-label $(containerGroup)-$(Build.BuildId) \
+        --ports 80 \
+        --location $(region)
