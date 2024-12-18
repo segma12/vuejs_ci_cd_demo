@@ -51,4 +51,5 @@ steps:
         --registry-username $ACR_USERNAME \
         --registry-password $ACR_PASSWORD \
         --dns-name-label $(containerGroup)-$(Build.BuildId) \
-        --ports 80 
+        --ports 80 \
+        --restart-policy Always
