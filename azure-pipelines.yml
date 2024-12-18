@@ -46,5 +46,4 @@ steps:
         --image $(acrName).azurecr.io/$(imageName):$(tag) \
         --registry-login-server $(acrName).azurecr.io \
         --dns-name-label $(containerGroup)-$(Build.BuildId) \
-        --ports 80 \
-        --location $(region)
+        --ports 80 
